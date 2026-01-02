@@ -5,4 +5,7 @@
        Route::get('/', function () {
             return response()->json(['message' => 'Hello World']);
        });
+
+       Route::post('/login', [\App\Http\Controllers\Api\V1\Auth\AuthController::class, 'login']);
+
     });
