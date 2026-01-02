@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
-class UserResource extends JsonResource
+class UsersResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,17 +16,21 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'    => $this->id,
-            'name'  => $this->fullname,
-            'email' => $this->email,
-            'username' => $this->username,
-            'no_whatsapp' => $this->no_telp,
+            'id'       => $this->id,
+            'name'     => $this->fullname,
+            'email'    => $this->email,
+            'status'   => $this->active,
+            'role'     => [
+                'id'   => $this->role_id,
+                'name' => $this->role?->name,
+            ],
             'avatar' => $this->profile_picture
                 ? Storage::disk('s3')->temporaryUrl(
                     $this->profile_picture,
                     now()->addMinutes(5)
                 )
                 : null,
+            'created_at' => $this->created_at?->toISOString(),
         ];
     }
 }
